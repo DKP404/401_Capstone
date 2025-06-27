@@ -8,4 +8,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/SlimUI/Modern Menu 1/Scenes/Demos/Demo1.unity
     guid: 829a86ba161cdd840842063447f41aab
+  - enabled: 1
+    path: Assets/Scenes/demo 1.unity
+    guid: ea609e6fa74766049b74583a98d94b30
   m_configObjects: {}
