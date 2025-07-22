@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class ThrottleController : MonoBehaviour
+public class JoystickThrustController : MonoBehaviour
 {
     public InputActionReference moveAction; // Assign: XRI RightHand Locomotion/Move
     public float maxSpeed = 25f;
@@ -23,15 +23,15 @@ public class ThrottleController : MonoBehaviour
     void FixedUpdate()
     {
         Vector2 input = moveAction.action.ReadValue<Vector2>();
-        float inputY = Mathf.Clamp(input.y, 0f, 1f); // forward only
+        float inputY = Mathf.Clamp(input.y, 0f, 1f); // only forward thrust
         targetSpeed = maxSpeed * inputY;
 
-        // Gradual acceleration
+        // Smoothly approach target speed
         currentSpeed = Mathf.Lerp(currentSpeed, targetSpeed, Time.fixedDeltaTime / accelerationTime);
 
-        Vector3 forward = transform.forward * currentSpeed * Time.fixedDeltaTime;
-        Vector3 upward = currentSpeed >= takeoffSpeed ? transform.up * verticalLiftSpeed * Time.fixedDeltaTime : Vector3.zero;
+        Vector3 forwardMovement = transform.forward * currentSpeed * Time.fixedDeltaTime;
+        Vector3 upwardLift = currentSpeed >= takeoffSpeed ? transform.up * verticalLiftSpeed * Time.fixedDeltaTime : Vector3.zero;
 
-        rb.MovePosition(rb.position + forward + upward);
+        rb.MovePosition(rb.position + forwardMovement + upwardLift);
     }
 }

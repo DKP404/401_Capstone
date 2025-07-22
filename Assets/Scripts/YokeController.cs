@@ -1,26 +1,21 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class YokeController : MonoBehaviour
+public class YokeFlightControl : MonoBehaviour
 {
-    public Transform yokeTransform;           // Assign the yoke GameObject
-    public Rigidbody airplaneRigidbody;       // Assign the airplane Rigidbody
-    public float pitchForce = 5f;
-    public float rollForce = 5f;
+    public InputActionReference leftStickInput; // Assign: XRI LeftHand Locomotion/Move
+    public Rigidbody airplaneRb;
+    public float rollSpeed = 30f;
 
     void FixedUpdate()
     {
-        if (yokeTransform && airplaneRigidbody)
-        {
-            float pitchAngle = yokeTransform.localEulerAngles.x;
-            float rollAngle = yokeTransform.localEulerAngles.z;
+        if (leftStickInput == null || airplaneRb == null) return;
 
-            // Convert Unity's 0-360 to -180 to 180
-            if (pitchAngle > 180) pitchAngle -= 360;
-            if (rollAngle > 180) rollAngle -= 360;
+        Vector2 input = leftStickInput.action.ReadValue<Vector2>();
+        float rollInput = input.x; // Left/right on joystick
 
-            // Apply torque
-            airplaneRigidbody.AddTorque(-transform.right * pitchAngle * pitchForce);
-            airplaneRigidbody.AddTorque(-transform.forward * rollAngle * rollForce);
-        }
+        // Apply roll (around Z axis for aircraft in Unity)
+        Quaternion rollRotation = Quaternion.Euler(0f, 0f, -rollInput * rollSpeed * Time.fixedDeltaTime);
+        airplaneRb.MoveRotation(airplaneRb.rotation * rollRotation);
     }
 }
