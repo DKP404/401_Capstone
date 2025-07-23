@@ -2,13 +2,13 @@ using UnityEngine;
 
 public class PreFlightChecklist : MonoBehaviour
 {
-    [Header("Checklist Toggles")]
-    public bool beaconLightOn;
-    public bool batterySwitchOn;
-    public bool enginesOn;
+    public bool beaconChecked = false;
+    public bool batteryChecked = false;
+    public bool engineChecked = false;
 
-    public bool AllChecksPassed => 
-        beaconLightOn &&
-        batterySwitchOn &&
-        enginesOn;
+    public bool CanFly => beaconChecked && batteryChecked && engineChecked;
+
+    public void MarkBeaconChecked()  => beaconChecked = true;
+    public void MarkBatteryChecked() => batteryChecked = true;
+    public void MarkEngineChecked()  => engineChecked = true;
 }
